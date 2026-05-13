@@ -1,26 +1,37 @@
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import App from "@/App";
 
 export const Route = createFileRoute("/")({
-  component: Index,
+  component: IndexPage,
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
+function IndexPage() {
+  const [ready, setReady] = useState(false);
 
-function Index() {
-  return <PlaceholderIndex />;
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const { enableMocking } = await import("@/mocks/browser");
+        await enableMocking();
+      } catch (e) {
+        console.warn("MSW failed to start", e);
+      }
+      if (!cancelled) setReady(true);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (!ready) {
+    return (
+      <div style={{ padding: 48, textAlign: "center", color: "#888" }}>
+        Ładowanie…
+      </div>
+    );
+  }
+
+  return <App />;
 }
