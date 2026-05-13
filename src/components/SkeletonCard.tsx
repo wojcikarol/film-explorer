@@ -2,8 +2,10 @@ export function SkeletonCard() {
   return (
     <div className="mb-card mb-skeleton-card">
       <div className="mb-skeleton mb-skeleton-poster" />
-      <div className="mb-skeleton mb-skeleton-line" style={{ width: "80%" }} />
-      <div className="mb-skeleton mb-skeleton-line" style={{ width: "50%" }} />
+      <div className="mb-card-body">
+        <div className="mb-skeleton mb-skeleton-line" style={{ width: "80%" }} />
+        <div className="mb-skeleton mb-skeleton-line" style={{ width: "50%" }} />
+      </div>
     </div>
   );
 }
